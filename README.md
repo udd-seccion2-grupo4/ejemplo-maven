@@ -31,7 +31,7 @@
 
 ### Run Jar
 * Local:      ./mvnw spring-boot:run 
-* Background: nohup bash mvnw spring-boot:run &
+* Background: ./mvnw spring-boot:run &
 
 ### Testing Application
 * curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'
