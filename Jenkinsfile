@@ -23,6 +23,16 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube') {
+            steps {
+                script {
+                    def scannerHome = tool 'sonar-scanner';
+                    withSonarQubeEnv('docker-compose-sonarqube') {
+                      sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.sources=src -Dsonar.java.binaries=build"
+                    }
+                }
+            }
+        }
         stage('Run') {
             steps {
                 script {
