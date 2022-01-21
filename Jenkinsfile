@@ -36,7 +36,7 @@ pipeline {
         stage('uploadNexus') {
             steps {
                 nexusPublisher nexusInstanceId: 'nexus3-docker',
-                nexusRepositoryId: 'test-nexus',
+                nexusRepositoryId: 'test-repo',
                 packages: [
                     [
                         $class: 'MavenPackage',
