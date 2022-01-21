@@ -5,21 +5,21 @@ pipeline {
         stage('Compile') {
             steps {
                 script {
-                    sh "./mvnw clean compile -e"
+                    sh './mvnw clean compile -e'
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    sh "./mvnw clean test -e"
+                    sh './mvnw clean test -e'
                 }
             }
         }
         stage('Build') {
             steps {
                 script {
-                    sh "./mvnw clean package -e"
+                    sh './mvnw clean package -e'
                 }
             }
         }
@@ -33,19 +33,24 @@ pipeline {
                 }
             }
         }
-        stage('Run') {
+        stage('uploadNexus') {
             steps {
-                script {
-                    sh "./mvnw spring-boot:run &"
-                    sleep 20
-                }
-            }
-        }
-        stage('Test Run') {
-            steps {
-                script {
-                   sh 'curl -X GET http://localhost:8081/rest/mscovid/test?msg=testing'
-                }
+                nexusPublisher nexusInstanceId: 'nexus3-docker',
+                nexusRepositoryId: 'test-nexus',
+                packages: [
+                    [
+                        $class: 'MavenPackage',
+                        mavenAssetList: [
+                            [classifier: '', extension: '', filePath: 'build/DevOpsUsach2020-0.0.1.jar']
+                        ],
+                        mavenCoordinate: [
+                            artifactId: 'DevOpsUsach2020',
+                            groupId: 'com.devopsusach2020',
+                            packaging: 'jar',
+                            version: '0.0.1'
+                        ]
+                    ]
+                ]
             }
         }
     }
